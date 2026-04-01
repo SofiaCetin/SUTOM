@@ -1,4 +1,4 @@
-# SUTOM_Cetin_Tabbakh
+# Jeu du SUTOM
 
 ## Auteurs et Collaborateurs
 
@@ -14,3 +14,5 @@ _Développement du fonctionnement de base du jeu:_
 À déterminer
 
 ## Présentation du SUTOM
+
+Le SUTOM(également connu sous son équivalent anglais Wordle), est un jeu de devinettes de mots.
