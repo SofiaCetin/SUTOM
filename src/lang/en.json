@@ -1,0 +1,13 @@
+{"language": "Language: EN",
+      "main_menu" : "Main menu",
+      "wordle" : "Wordle",
+      "play" : "Play",
+      "options" : "Options",
+      "quit" : "Leave",
+      "back" : "Back",
+      "mode_default" : "Difficulty: Standard",
+      "mode_intermediate" : "Difficulty: Intermediate",
+      "mode_hard" : "Difficulty: Hard",
+      "win_message" : "You guessed the correct word !",
+      "lose_message" : "Nice try !"
+}

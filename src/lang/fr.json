@@ -1,0 +1,13 @@
+{"language" : "Langage: FR",
+      "main_menu" : "Menu principal",
+      "wordle" : "SUTOM",
+      "play" : "Jouer",
+      "options" : "Paramètres",
+      "quit" : "Quitter",
+      "back" : "Retour",
+      "mode_default" : "Mode: Standard",
+      "mode_intermediate" : "Mode: Intermédiaire",
+      "mode_hard" : "Mode: Difficile",
+      "win_message" : "Vous avez deviné le mot du jour !",
+      "lose_message" : "Dommage !"
+}

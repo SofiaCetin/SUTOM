@@ -1,4 +1,4 @@
-import pygame, random
+import pygame, random, json, os
 
 pygame.init()
 
@@ -16,31 +16,13 @@ GREEN = (108,169,101)
 YELLOW = (200,182,83)
 ORANGE = (240, 146, 58)
 
-FRENCH_LANG = {"language" : "Langage: FR",
-      "main_menu" : "Menu principal",
-      "wordle" : "SUTOM",
-      "play" : "Jouer",
-      "options" : "Paramètres",
-      "quit" : "Quitter",
-      "back" : "Retour",
-      "mode_default" : "Mode: Standard",
-      "mode_intermediate" : "Mode: Intermédiaire",
-      "mode_hard" : "Mode: Difficile",
-      "win_message" : "Vous avez deviné le mot du jour !",
-      "lose_message" : "Dommage !"}
+languages = []
 
-ENGLISH_LANG = {"language": "Language: EN",
-      "main_menu" : "Main menu",
-      "wordle" : "Wordle",
-      "play" : "Play",
-      "options" : "Options",
-      "quit" : "Leave",
-      "back" : "Back",
-      "mode_default" : "Difficulty: Standard",
-      "mode_intermediate" : "Difficulty: Intermediate",
-      "mode_hard" : "Difficulty: Hard",
-      "win_message" : "You guessed the correct word !",
-      "lose_message" : "Nice try !"}
+for file in os.listdir("lang"):
+    file_path = os.path.join("lang",file)
+    with open(file_path) as json_f:
+        file = json.load(json_f)
+        languages.append(file)
 
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 CLOCK = pygame.time.Clock()
@@ -91,7 +73,7 @@ class Letter:
 #Fonctions de jeu
     
 def main():
-    lang = FRENCH_LANG
+    lang = languages[1]
     mode_level = "default"
     screen = "menu"
     running = True
@@ -248,10 +230,9 @@ def options(lang,mode_level):
                 return "menu", True
 
             elif language_btn.on_click(event):
-                if lang == FRENCH_LANG:
-                    lang = ENGLISH_LANG
-                else:
-                    lang = FRENCH_LANG
+                limit = len(languages)
+                i = languages.index(lang)
+                lang = languages[(i + 1) % limit]
                 return "options", lang, mode_level
             
             elif mode_btn.on_click(event):
