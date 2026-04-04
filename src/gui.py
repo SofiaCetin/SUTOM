@@ -7,10 +7,14 @@ pygame.init()
 WIDTH = 1280
 HEIGHT = 720
 FONT = pygame.font.SysFont("arial", 50)
+TITLE_FONT = pygame.font.SysFont("arial", 80)
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-GREY = (128, 128, 128)
+GREY = (120,124,127)
+GREEN = (108,169,101)
+YELLOW = (200,182,83)
+ORANGE = (240, 146, 58)
 
 FRENCH_LANG = {"language" : "Langage: FR",
       "main_menu" : "Menu principal",
@@ -53,7 +57,7 @@ class Button:
 
     def draw(self, screen):
         pygame.draw.rect(screen, self.color, self.rect)
-        text = FONT.render(self.text, True, (255, 255, 255))
+        text = FONT.render(self.text, True, WHITE)
         text_rect = text.get_rect(center=self.rect.center)
         screen.blit(text, text_rect)
 
@@ -67,34 +71,22 @@ class Button:
 
 class Letter:
 
-    def __init__(self, color, x, y, width, height, text='', exec="writable", input_status="deactivated", next = "", previous = ""):
+    def __init__(self, x, y, width, height, text='', exec="writable", color="GREY", bg_color="WHITE", input_status="deactivated", next = "", previous = ""):
         self.rect = pygame.Rect(x, y, width, height)
         self.text = text
         self.exec = exec
         self.input_status = input_status
         self.color = color
+        self.bg_color = bg_color
         self.next = next 
         self.previous = previous
 
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect, 2)
+        pygame.draw.rect(screen, self.bg_color, self.rect)
+        pygame.draw.rect(screen, self.color, self.rect, 3)
         text = FONT.render(self.text, True, BLACK)
         text_rect = text.get_rect(center=self.rect.center)
         screen.blit(text, text_rect)
-
-    def write_newletter(self, event):
-        if self.input_status == "activated":
-            if event.key == pygame.K_BACKSPACE:
-                self.text = ""
-                self.exec = "writable"
-            elif self.previous:
-                self.input_status = "deactivated"
-                self.previous.input_status = "activated"
-                self.previous.text = ""
-        else:
-            if self.exec == "writable":
-                self.text = event.unicode
-                self.exec = "clearable"
 
 #Fonctions de jeu
     
@@ -113,7 +105,7 @@ def main():
             screen, lang, mode_level = options(lang, mode_level)
         
         elif screen == "play":
-            screen_name, quit_program = play(lang, mode_level)
+            quit_program = play(lang, mode_level)
             if quit_program:
                 running = False
         
@@ -124,6 +116,7 @@ def main():
 def play(lang,mode_level):
     pygame.display.set_caption(lang["wordle"] + " - " + lang["play"])
     running = True
+    quit_program = False
 
     if mode_level == "default":
         word_length = random.randint(6,10)
@@ -147,24 +140,42 @@ def play(lang,mode_level):
     for row in range(rows):
         row_list = []
 
-        first_x = start_x * (box_size + gap)
+        first_x = start_x
         first_y = start_y
-        first_letter = Letter(GREY,first_x,first_y,box_size,box_size)
+        first_letter = Letter(first_x,first_y,box_size,box_size)
         first_letter.previous = None
         previous_letter = first_letter
+        row_list.append(first_letter)
         for col in range(1,word_length):
             x = start_x + col * (box_size + gap)
             y = start_y
-            letter = Letter(GREY,x,y,box_size,box_size)
+            letter = Letter(x,y,box_size,box_size)
             previous_letter.next = letter
             letter.previous = previous_letter
             previous_letter = letter
             row_list.append(letter)
 
         start_y += box_size + 10
-        letter.next = None
+        row_list[-1].next = None
         grid.append(row_list)
+    
+    keyboard = ["azertyuiop","qsdfghjklm","wxcvbn"]
+    indicator_grid = []
+    indicator_grid_rows = len(keyboard)
+    keyboard_box_size = 65
+    keyboard_start_y = SCREEN.get_height() - 3 * (keyboard_box_size + 10)
 
+    for row in range(indicator_grid_rows):
+        indicator_row = []
+        line_length = len(keyboard[row])
+        total_width = line_length * keyboard_box_size + (line_length - 1) * gap
+        start_x = (SCREEN.get_width() - total_width) // 2 
+        for line in range(len(keyboard[row])):
+            x = start_x + line * (keyboard_box_size + gap)
+            letter = Letter(x, keyboard_start_y, keyboard_box_size, keyboard_box_size, text=keyboard[row][line])
+            indicator_row.append(letter)
+        keyboard_start_y += keyboard_box_size + 10
+        indicator_grid.append(indicator_row)
 
     i = 0
     current_row = grid[i]
@@ -178,47 +189,56 @@ def play(lang,mode_level):
             for letter in row:
                 letter.draw(SCREEN)
 
+        for row in indicator_grid:
+            for letter in row:
+                letter.draw(SCREEN)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
                 quit_program = True
 
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_BACKSPACE:
-                    if current_letter.text != "":
-                        current_letter.text = ""
-                        current_letter.exec = "writable"
-                    elif current_letter.previous:
-                        current_letter.input_status = "deactivated"
-                        current_letter = current_letter.previous
-                        current_letter.input_status = "activated"
-                        current_letter.text = ""
-                        current_letter.exec = "writable"
+                if current_letter.input_status == "activated":
+                    if event.key == pygame.K_BACKSPACE:
+                        if current_letter.text != "":
+                            current_letter.text = ""
+                            current_letter.exec = "writable"
+                        elif current_letter.previous:
+                            current_letter.input_status = "deactivated"
+                            current_letter = current_letter.previous
+                            current_letter.input_status = "activated"
+                            current_letter.text = ""
+                            current_letter.exec = "writable"
 
-                elif event.unicode.isalpha():
-                    if current_letter.text == "":
-                        current_letter.text = event.unicode.upper()
-                        current_letter.exec = "clearable"
-                    if current_letter.text != "" and current_letter.next:
-                        current_letter.input_status = "deactivated"
-                        current_letter = current_letter.next
-                        current_letter.input_status = "activated"
+                    elif event.unicode.isalpha():
+                        if current_letter.text == "":
+                            current_letter.text = event.unicode.upper()
+                            current_letter.exec = "clearable"
+                        if current_letter.text != "" and current_letter.next:
+                            current_letter.input_status = "deactivated"
+                            current_letter = current_letter.next
+                            current_letter.input_status = "activated"
                 
-                elif event.key == pygame.K_RETURN:
-                    if current_letter.next == None:
-                        print("Ligne finie")
-                        
+                    elif event.key == pygame.K_RETURN:
+                        if current_letter.next == None and current_letter.text != "":
+                            current_letter.input_status = "deactivated"
+                            if i < 5:
+                                i += 1
+                                current_row = grid[i]
+                                current_letter = current_row[0]
+                                current_letter.input_status = "activated"
+
         pygame.display.flip()
     return "menu", quit_program
 
 def options(lang,mode_level):
     pygame.display.set_caption(lang["wordle"] + " - " + lang["options"])
     running = True
-    quit_program = False
 
-    language_btn = Button(lang["language"], BLACK, WIDTH // 2, 200, 490, 60)
-    mode_btn = Button(lang["mode_" + mode_level], BLACK, WIDTH // 2, 300, 490, 60)
-    back_btn = Button(lang["back"], BLACK, WIDTH // 2, 400, 490, 60)
+    language_btn = Button(lang["language"], GREEN, WIDTH // 2, 200, 490, 60)
+    mode_btn = Button(lang["mode_" + mode_level], ORANGE, WIDTH // 2, 300, 490, 60)
+    back_btn = Button(lang["back"], YELLOW, WIDTH // 2, 400, 490, 60)
 
     while running:
         for event in pygame.event.get():
@@ -246,7 +266,7 @@ def options(lang,mode_level):
             elif back_btn.on_click(event):
                 return "menu", lang, mode_level
         
-        SCREEN.fill((255, 255, 255))
+        SCREEN.fill(WHITE)
         language_btn.draw(SCREEN)
         mode_btn.draw(SCREEN)
         back_btn.draw(SCREEN)
@@ -258,9 +278,11 @@ def main_menu(lang):
     pygame.display.set_caption(lang["wordle"] + '-' + lang["main_menu"])
     running = True
 
-    play_btn = Button(lang["play"], BLACK, WIDTH // 2, 300, 490, 60)
-    option_btn = Button(lang["options"], BLACK, WIDTH // 2, 400, 490, 60)
-    quit_btn = Button(lang["quit"], BLACK, WIDTH // 2, 500, 490, 60)
+    text = TITLE_FONT.render(lang["wordle"], True, BLACK)
+    text_rect = text.get_rect(center=(SCREEN.get_width() // 2, 120))
+    play_btn = Button(lang["play"], GREEN, WIDTH // 2, 300, 490, 60)
+    option_btn = Button(lang["options"], GREY, WIDTH // 2, 400, 490, 60)
+    quit_btn = Button(lang["quit"], YELLOW, WIDTH // 2, 500, 490, 60)
 
     while running:
         for event in pygame.event.get():
@@ -277,16 +299,14 @@ def main_menu(lang):
             elif quit_btn.on_click(event):
                 running = False
         
-        SCREEN.fill((255, 255, 255))
+        SCREEN.fill(WHITE)
         play_btn.draw(SCREEN)
         option_btn.draw(SCREEN)
         quit_btn.draw(SCREEN)
+        SCREEN.blit(text, text_rect)
         pygame.display.update()
 
 def check_input(row):
-    pass
-
-def deactivate_row(row):
     pass
 
 main()
