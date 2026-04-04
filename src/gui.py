@@ -1,4 +1,4 @@
-import pygame
+import pygame, random
 
 pygame.init()
 
@@ -8,8 +8,9 @@ WIDTH = 1280
 HEIGHT = 720
 FONT = pygame.font.SysFont("arial", 50)
 
-WHITE = (255, 0, 0)
+WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+GREY = (128, 128, 128)
 
 FRENCH_LANG = {"language" : "Langage: FR",
       "main_menu" : "Menu principal",
@@ -39,11 +40,8 @@ ENGLISH_LANG = {"language": "Language: EN",
 
 SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 CLOCK = pygame.time.Clock()
-running = True
 
-#Implémentation du visuel
-
-#Boucle du jeu
+#Classes
 
 class Button:
 
@@ -66,13 +64,47 @@ class Button:
                     and self.rect.y <= mouse_y <= self.rect.y + self.rect.height):
                     return True
         return False
+
+class Letter:
+
+    def __init__(self, color, x, y, width, height, text='', exec="writable", input_status="deactivated", next = "", previous = ""):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.text = text
+        self.exec = exec
+        self.input_status = input_status
+        self.color = color
+        self.next = next 
+        self.previous = previous
+
+    def draw(self, screen):
+        pygame.draw.rect(screen, self.color, self.rect, 2)
+        text = FONT.render(self.text, True, BLACK)
+        text_rect = text.get_rect(center=self.rect.center)
+        screen.blit(text, text_rect)
+
+    def write_newletter(self, event):
+        if self.input_status == "activated":
+            if event.key == pygame.K_BACKSPACE:
+                self.text = ""
+                self.exec = "writable"
+            elif self.previous:
+                self.input_status = "deactivated"
+                self.previous.input_status = "activated"
+                self.previous.text = ""
+        else:
+            if self.exec == "writable":
+                self.text = event.unicode
+                self.exec = "clearable"
+
+#Fonctions de jeu
     
 def main():
     lang = FRENCH_LANG
     mode_level = "default"
     screen = "menu"
+    running = True
 
-    while True:
+    while running:
 
         if screen == "menu":
             screen = main_menu(lang)
@@ -81,19 +113,108 @@ def main():
             screen, lang, mode_level = options(lang, mode_level)
         
         elif screen == "play":
-            play(lang, mode_level)
+            screen_name, quit_program = play(lang, mode_level)
+            if quit_program:
+                running = False
+        
         else:
-            break
+            running = False
     pygame.quit()
 
 def play(lang,mode_level):
     pygame.display.set_caption(lang["wordle"] + " - " + lang["play"])
-    while True:
-        pass
+    running = True
+
+    if mode_level == "default":
+        word_length = random.randint(6,10)
+    elif mode_level == "intermediate":
+        word_length = 8
+    else:
+        word_length = 10
+
+    grid = []
+    rows = 6
+
+    box_size = 70
+    gap = 10
+
+    total_width = word_length * box_size + (word_length - 1) * gap
+
+    start_x = (SCREEN.get_width() - total_width) // 2 
+    
+    start_y = 10
+
+    for row in range(rows):
+        row_list = []
+
+        first_x = start_x * (box_size + gap)
+        first_y = start_y
+        first_letter = Letter(GREY,first_x,first_y,box_size,box_size)
+        first_letter.previous = None
+        previous_letter = first_letter
+        for col in range(1,word_length):
+            x = start_x + col * (box_size + gap)
+            y = start_y
+            letter = Letter(GREY,x,y,box_size,box_size)
+            previous_letter.next = letter
+            letter.previous = previous_letter
+            previous_letter = letter
+            row_list.append(letter)
+
+        start_y += box_size + 10
+        letter.next = None
+        grid.append(row_list)
+
+
+    i = 0
+    current_row = grid[i]
+    current_letter = current_row[0]
+    current_letter.input_status = "activated"
+
+    while running:
+
+        SCREEN.fill(WHITE)
+        for row in grid:
+            for letter in row:
+                letter.draw(SCREEN)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                quit_program = True
+
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_BACKSPACE:
+                    if current_letter.text != "":
+                        current_letter.text = ""
+                        current_letter.exec = "writable"
+                    elif current_letter.previous:
+                        current_letter.input_status = "deactivated"
+                        current_letter = current_letter.previous
+                        current_letter.input_status = "activated"
+                        current_letter.text = ""
+                        current_letter.exec = "writable"
+
+                elif event.unicode.isalpha():
+                    if current_letter.text == "":
+                        current_letter.text = event.unicode.upper()
+                        current_letter.exec = "clearable"
+                    if current_letter.text != "" and current_letter.next:
+                        current_letter.input_status = "deactivated"
+                        current_letter = current_letter.next
+                        current_letter.input_status = "activated"
+                
+                elif event.key == pygame.K_RETURN:
+                    if current_letter.next == None:
+                        print("Ligne finie")
+                        
+        pygame.display.flip()
+    return "menu", quit_program
 
 def options(lang,mode_level):
     pygame.display.set_caption(lang["wordle"] + " - " + lang["options"])
     running = True
+    quit_program = False
 
     language_btn = Button(lang["language"], BLACK, WIDTH // 2, 200, 490, 60)
     mode_btn = Button(lang["mode_" + mode_level], BLACK, WIDTH // 2, 300, 490, 60)
@@ -104,6 +225,7 @@ def options(lang,mode_level):
 
             if event.type == pygame.QUIT:
                 running = False
+                return "menu", True
 
             elif language_btn.on_click(event):
                 if lang == FRENCH_LANG:
@@ -128,7 +250,8 @@ def options(lang,mode_level):
         language_btn.draw(SCREEN)
         mode_btn.draw(SCREEN)
         back_btn.draw(SCREEN)
-        pygame.display.update()
+        pygame.display.flip()
+    return "menu", False
         
 
 def main_menu(lang):
@@ -146,7 +269,7 @@ def main_menu(lang):
                 running = False
 
             elif play_btn.on_click(event):
-                print("bouton jouer appuyé")
+                return "play"
             
             elif option_btn.on_click(event):
                 return "options"
@@ -159,6 +282,12 @@ def main_menu(lang):
         option_btn.draw(SCREEN)
         quit_btn.draw(SCREEN)
         pygame.display.update()
+
+def check_input(row):
+    pass
+
+def deactivate_row(row):
+    pass
 
 main()
 pygame.quit()
