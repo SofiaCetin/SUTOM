@@ -136,20 +136,30 @@ def play(lang, mode_level, screen, font):
     running = True
     quit_program = False
     
-
     if mode_level == "default":
         word_length = random.randint(6,10)
         grid = gui.init_grid(screen, word_length)
+        key = str(word_length) + "_letter_words"
+        random_word = random.randint(0, len(lang[key]) - 1)
+        secret_word = lang[key][random_word]
     elif mode_level == "intermediate":
         word_length = 8
         grid = gui.init_grid(screen, 8)
+        key = "8_letter_words"
+        random_word = random.randint(0, len(lang[key]) - 1)
+        secret_word = lang[key][random_word]
     else:
         word_length = 10
         grid = gui.init_grid(screen, 10)
+        key = "10_letter_words"
+        random_word = random.randint(0, len(lang[key]) - 1)
+        secret_word = lang[key][random_word]
     
-    secret_word = "ENTENDRE"
     game = script.Game(secret_word.upper())
-    
+    possible_tries = [i.upper() for i in lang[key]]
+    print(len(game.secret))
+    possible_length = [len(i) for i in lang[key]]
+    print(possible_length)
     indicator_grid = gui.init_keyboard(screen)
 
     i = 0
@@ -208,11 +218,11 @@ def play(lang, mode_level, screen, font):
                                 correct = ["ok" for i in range(word_length)]
                                 if resultat == correct:
                                     gui.win_anim(screen, font, indicator_grid, grid, current_row)
-                                    return "win_message", lang, game.mot_essayer, secret_word, quit_program
+                                    return "win_message", lang, game.mot_essayer, game.secret, quit_program
                                 else:
                                     if i == 5:
                                         gui.lose_anim(screen, font, resultat, indicator_grid, grid, current_row)
-                                        return "lose_message", lang, game.mot_essayer, secret_word, quit_program
+                                        return "lose_message", lang, game.mot_essayer, game.secret, quit_program
                                     else:
                                         gui.change_letter_colors(indicator_grid, current_row, resultat)
                                         i += 1
