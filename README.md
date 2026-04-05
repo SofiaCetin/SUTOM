@@ -19,9 +19,11 @@ _Développement du solveur:_
 
 Le SUTOM(également connu sous son équivalent anglais Wordle), est un jeu de devinettes de mots. Le concept est simple: l'utilisateur possède 6 chances pour deviner un mot d'une longueur variable de 6 à 10 lettres. Si l'utilisateur ne devine pas le mot à l'issue de ces 6 chances, il a perdu, et inversement, il gagne.
 
-<img src="assets/sutom_grille_du_jour-1200x1200.png" width="300" alt="Une image du jeu SUTOM français">
+Le jeu donne plusieurs indications au joueur afin d'avancer: les lettres en vertes sont des lettres bien placées, les lettres en jaune sont les lettres correctes mais mal placées, et enfin les lettres grises sont les lettres qui n'existent pas du tout dans le mot.
 
-_Une image du jeu SUTOM_
+<img src="assets/image_readme2.png" width="300" alt="Une image exemple du jeu">
+
+_Une image exemple du jeu_
 
 ## Utilisation
 

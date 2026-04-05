@@ -157,9 +157,6 @@ def play(lang, mode_level, screen, font):
     
     game = script.Game(secret_word.upper())
     possible_tries = [i.upper() for i in lang[key]]
-    print(len(game.secret))
-    possible_length = [len(i) for i in lang[key]]
-    print(possible_length)
     indicator_grid = gui.init_keyboard(screen)
 
     i = 0
