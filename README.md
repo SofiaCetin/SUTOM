@@ -39,7 +39,7 @@ Pour plus d'informations sur ce package, vous pouvez consulter le lien officiel 
 
 Vous pouvez également configurer un environnement virtuel pour ne pas avoir à installer le package sur toute votre machine. 
 
-**[Créer un environnement Python virtuel](https://docs.python.org/fr/3.9/library/venv.html)**
+**[Créer un environnement Python virtuel](https://docs.python.org/3/library/venv.html)**
 
 _**Attention:** Pygame ne peut pas être installé sous les versions Python 3.14+ faute de mises à jour. C'est pour cela que je vous conseille de déployer un environnement virtuel sous une autre version de Python, comme la version 3.13.9._
 
