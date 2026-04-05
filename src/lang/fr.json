@@ -8,6 +8,10 @@
       "mode_default" : "Mode: Standard",
       "mode_intermediate" : "Mode: Intermédiaire",
       "mode_hard" : "Mode: Difficile",
+      "win" : "Bravo !",
+      "lose" : "Dommage !",
       "win_message" : "Vous avez deviné le mot du jour !",
+      "daily_word" : "Le mot du jour était: ",
+      "nb_of_tries" : "Nombre d'essais: ",
       "lose_message" : "Dommage !"
 }

@@ -8,6 +8,10 @@
       "mode_default" : "Difficulty: Standard",
       "mode_intermediate" : "Difficulty: Intermediate",
       "mode_hard" : "Difficulty: Hard",
+      "win" : "Congrats !",
+      "lose" : "Nice try !",
       "win_message" : "You guessed the correct word !",
+      "daily_word" : "Today's word was: ",
+      "nb_of_tries" : "Number of tries: ",
       "lose_message" : "Nice try !"
 }
