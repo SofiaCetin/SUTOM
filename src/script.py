@@ -24,6 +24,8 @@ def verification(mot_secret, mot_essayer):
                 occurences[mot_essayer[i]] -= 1
         else:
             resultat.append("non")
+    
+    return resultat
 
 class Game:
     def __init__(self, mot_secret):
