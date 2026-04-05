@@ -1,6 +1,7 @@
 import script
 
 mode = input()
+
 secret_word = input().strip().upper()
 game = script.Game(secret_word)
 max_tries = 6
@@ -32,4 +33,3 @@ try:
 except EOFError:
     print("Perdu",f"Essais: {len(game.mot_essayer)}")
     pass
-

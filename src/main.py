@@ -2,7 +2,6 @@ import pygame, random, gui, script, os, json, sys
 
 WIDTH = 1280
 HEIGHT = 720
-possible_tries = ["CHOCOLAT","VOLCANOS","CLAVIERS","FRAGILES","ENTENDRE","FRANCAIS","FRAISIER"]
 
 def loadlang():
     languages = {}
