@@ -17,7 +17,7 @@ _Développement du solveur:_
 
 ## Présentation du SUTOM
 
-Le SUTOM(également connu sous son équivalent anglais Wordle), est un jeu de devinettes de mots. Le concept est simple: l'utilisateur possède un certain nombre de chances pour deviner un mot d'une longueur variable de 6 à 10 lettres. Si l'utilisateur ne devine pas le mot à l'issue de ces 6 chances, il a perdu, et inversement, il gagne.
+Le SUTOM(également connu sous son équivalent anglais Wordle), est un jeu de devinettes de mots. Le concept est simple: l'utilisateur possède 6 chances pour deviner un mot d'une longueur variable de 6 à 10 lettres. Si l'utilisateur ne devine pas le mot à l'issue de ces 6 chances, il a perdu, et inversement, il gagne.
 
 <img src="assets/grille-sutom-2589165-1200x900.jpg" width="300" alt="Une image du jeu SUTOM français">
 
@@ -64,3 +64,52 @@ $python3 tests.py < ../tests/test.txt
 ```
 
 _Notez que les démos avec l'interface graphique ne sont pas disponibles et complexes à implémenter. On n'utilisera donc que l'output du terminal._
+
+## Fonctionnalités
+
+### Difficultés de jeu
+
+Cette version Python du SUTOM propose trois difficultés différentes:
+
+- **Standard**: paramètres classiques du SUTOM, les mots sont de longueur aléatoire entre 6 lettres minimum et 10 lettres maximum.
+- **Intermédiaire**: seulement des mots de 8 lettres
+- **Difficile**: seulement des mots de 10 lettres
+
+Le mode initialisé par défaut est le mode **Standard**.
+
+### Langues
+
+Le jeu propose deux langues que vous pouvez changer dans les options: le français, initialisé par défaut lors du lancement du programme, et l'anglais.
+
+Il est possible d'implémenter de nouvelles langues au programme, sous format JSON. Vous pouvez vous référer au menu déroulant ci-dessous si vous souhaitez davantage d'informations.
+
+<details>
+
+<summary><u>Comment importer ses propres langues ?</u></summary>
+
+Le format supporté par le programme pour l'import de fichiers langues est le format [JSON](https://fr.wikipedia.org/wiki/JavaScript_Object_Notation).
+
+Il doit respecter la notation suivante: les clés doivent être inchangées pour assurer le bon fonctionnement du programme. Elles sont en anglais par défaut et désignent un champ de texte spécifique. Voici l'exemple du fichier **fr.json** que vous pouvez retrouver dans le dépôt:
+
+```json
+{"language" : "Langage: FR",
+      "main_menu" : "Menu principal",
+      "wordle" : "SUTOM",
+      "play" : "Jouer",
+      "options" : "Paramètres",
+      "quit" : "Quitter",
+      "back" : "Retour",
+      "mode_default" : "Mode: Standard",
+      "mode_intermediate" : "Mode: Intermédiaire",
+      "mode_hard" : "Mode: Difficile",
+      "win" : "Bravo !",
+      "lose" : "Dommage !",
+      "win_message" : "Vous avez deviné le mot du jour !",
+      "daily_word" : "Le mot du jour était: ",
+      "nb_of_tries" : "Nombre d'essais: ",
+      "lose_message" : "Dommage !"
+}
+```
+Une fois cette syntaxe respectée, vous pouvez insérer votre fichier dans le dossier lang, situé dans le dossier src. Le programme le prendra en compte au relancement, et vous pourrez choisir cette langue dans les paramètres.
+
+</details>
