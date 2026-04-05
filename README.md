@@ -89,7 +89,7 @@ Il est possible d'implémenter de nouvelles langues au programme, sous format JS
 
 Le format supporté par le programme pour l'import de fichiers langues est le format [JSON](https://fr.wikipedia.org/wiki/JavaScript_Object_Notation).
 
-Il doit respecter la notation suivante: les clés doivent être inchangées pour assurer le bon fonctionnement du programme. Elles sont en anglais par défaut et désignent un champ de texte spécifique. Voici l'exemple du fichier **fr.json** que vous pouvez retrouver dans le dépôt:
+Il doit respecter la notation suivante: les clés doivent être inchangées pour assurer le bon fonctionnement du programme. Elles sont en anglais par défaut et désignent un champ de texte spécifique. Voici l'exemple du fichier **fr\.json** que vous pouvez retrouver dans le dépôt:
 
 ```json
 {"language" : "Langage: FR",
@@ -107,9 +107,50 @@ Il doit respecter la notation suivante: les clés doivent être inchangées pour
       "win_message" : "Vous avez deviné le mot du jour !",
       "daily_word" : "Le mot du jour était: ",
       "nb_of_tries" : "Nombre d'essais: ",
-      "lose_message" : "Dommage !"
+      "lose_message" : "Dommage !",
+      "6_letter_words" : ["Chaton", "Maison",
+                        "Jardin", "Souris",
+                        "Poulet", "Bureau",
+                        "Tomate", "Argent",
+                        "Soleil", "Veloce"],
+      "7_letter_words" : ["Voyages", "Chiffre",
+                        "Lumiere", "Entends",
+                        "Matelas", "Tableau",
+                        "Cousine", "Costume",
+                        "Clavier", "Etoiles"],
+      "8_letter_words" : ["Papillon", "Entendre",
+                        "Chocolat", "Montagne",
+                        "Emporter", "Aeroport",
+                        "Tortilla", "Terminal",
+                        "Aventure", "Bracelet"],
+      "9_letter_words" : ["Mandarine", "Rassemble",
+                        "Spectacle", "Campagnes",
+                        "Vengeance", "Ecrivains",
+                        "Livraison", "Direction",
+                        "Delicates", "Solitaire"],
+      "10_letter_words" : ["Directions", "Decouverte",
+                        "Fabriqueur", "Impression",
+                        "Volcanique", "Basketball",
+                        "Leadership", "Television",
+                        "Telephones", "Confiserie"]
 }
 ```
 Une fois cette syntaxe respectée, vous pouvez insérer votre fichier dans le dossier lang, situé dans le dossier src. Le programme le prendra en compte au relancement, et vous pourrez choisir cette langue dans les paramètres.
 
+C'est également ici que vous pourrez modifier les lexiques pour chacunes des langues implémentées(voir la prochaine section).
+
 </details>
+
+### Implémentation d'un lexique
+
+Les fichiers lang incluent un lexique par défaut, composé de 10 mots pour des mots allant de 6 à 10 lettres. Vous pouvez modifier ce lexique en éditant le fichier JSON et les parties **6_letter_words**, **7_letter_words** et ainsi de suite. 
+
+Il est important de respecter la bonne longueur des mots pour assurer le bon fonctionnement des différentes difficultés proposées par le jeu.
+
+### Tests automatisés
+
+Dans le fichier tests, vous pourrez trouvez les différents tests effectués avec des inputs différents pour vous montrer comment le programme parvient à gérer les cas spécifiques. Comme dit précédemment, les tests ne peuvent qu'être effectués uniquement à l'aide du fichier **tests\.py**, et l'output aura lieu dans le terminal.
+
+Le lancement de fichiers démos est détaillé dans la section **Exécution**.
+
+
