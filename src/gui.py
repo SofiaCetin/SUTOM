@@ -8,6 +8,7 @@ GREY = (120,124,127)
 GREEN = (108,169,101)
 YELLOW = (200,182,83)
 ORANGE = (240, 146, 58)
+RED = (226, 74, 74)
 
 #Classes
 
@@ -93,7 +94,7 @@ def init_grid(screen,word_length):
 
 def init_keyboard(screen):
     
-    keyboard = ["azertyuiop","qsdfghjklm","wxcvbn"]
+    keyboard = ["AZERTYUIOP","QSDFGHJKLM","WXCVBN"]
     indicator_grid = []
     indicator_grid_rows = len(keyboard)
     keyboard_box_size = 65
@@ -114,7 +115,66 @@ def init_keyboard(screen):
     
     return indicator_grid
 
+def change_letter_colors(indicator, row, result):
+    i = 0
+    for letter in row:
+        status = result[i]
+        if status == "mal placé":
+            letter.bg_color = YELLOW
+        elif status == "ok":
+            letter.bg_color = GREEN
+        else:
+            letter.bg_color = GREY
+        
+        for j in range(3):
+            for letter2 in indicator[j]:
+                if letter2.text == letter.text:
+                    letter2.bg_color = letter.bg_color
+        i += 1
 
+def win_anim(screen, font, indicator, grid, row):
+    for letter in row:
+        letter.bg_color = GREEN
+        for i in range(3):
+            for letter2 in indicator[i]:
+                if letter2.text == letter.text:
+                    letter2.bg_color = letter.bg_color
 
-def check_input(row):
-    pass
+        screen.fill(WHITE)
+        for row in grid:
+            for l in row:
+                l.draw(screen, font)
+        for row in indicator:
+            for l in row:
+                l.draw(screen, font)
+
+        pygame.display.flip()
+        pygame.time.delay(350)
+
+def lose_anim(screen, font, results, indicator, grid, row):
+    i = 0
+    for letter in row:
+        status = results[i]
+        if status == "mal placé":
+            letter.bg_color = YELLOW
+        elif status == "ok":
+            letter.bg_color = GREEN
+        else:
+            letter.bg_color = GREY
+        
+        for j in range(3):
+            for letter2 in indicator[j]:
+                if letter2.text == letter.text:
+                    letter2.bg_color = letter.bg_color
+        
+        screen.fill(WHITE)
+        for row in grid:
+            for l in row:
+                l.draw(screen, font)
+        for row in indicator:
+            for l in row:
+                l.draw(screen, font)
+
+        pygame.display.flip()
+        pygame.time.delay(350)
+        i += 1
