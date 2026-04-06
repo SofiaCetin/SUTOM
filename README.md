@@ -185,7 +185,7 @@ Miel
 
 
 </details>
-<br>
+
 Il est possible de modifier le lexique d'une langue en éditant manuellement le fichier JSON et les clés correspondantes, mais ceci est déconseillé car cela peut favoriser les erreurs de longueur de mots et de langues.
 
 ### Tests automatisés
