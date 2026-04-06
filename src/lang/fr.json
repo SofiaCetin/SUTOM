@@ -23,7 +23,8 @@
                         "Lumiere", "Entends",
                         "Matelas", "Tableau",
                         "Cousine", "Costume",
-                        "Clavier", "Etoiles"],
+                        "Clavier", "étoiles",
+                        "écouter"],
       "8_letter_words" : ["Papillon", "Entendre",
                         "Chocolat", "Montagne",
                         "Emporter", "Aeroport",
@@ -33,10 +34,10 @@
                         "Spectacle", "Campagnes",
                         "Vengeance", "Ecrivains",
                         "Livraison", "Direction",
-                        "Delicates", "Solitaire"],
+                        "Délicates", "Solitaire"],
       "10_letter_words" : ["Directions", "Decouverte",
                         "Fabriqueur", "Impression",
                         "Volcanique", "Basketball",
                         "Leadership", "Television",
-                        "Telephones", "Confiserie"]
+                        "Téléphones", "Confiserie"]
 }

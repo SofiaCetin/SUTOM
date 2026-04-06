@@ -1,4 +1,4 @@
-import pygame, random, gui, script, os, json, sys
+import pygame, unidecode, random, gui, script, os, json, sys
 
 WIDTH = 1280
 HEIGHT = 720
@@ -230,8 +230,8 @@ def play(lang, mode_level, screen, font):
         random_word = random.randint(0, len(lang[key]) - 1)
         secret_word = lang[key][random_word]
     
-    game = script.Game(secret_word.upper())
-    possible_tries = [i.upper() for i in lang[key]]
+    game = script.Game(unidecode.unidecode(secret_word.upper()))
+    possible_tries = [unidecode.unidecode(i.upper()) for i in lang[key]]
     indicator_grid = gui.init_keyboard(screen)
 
     i = 0
