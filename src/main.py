@@ -4,6 +4,20 @@ WIDTH = 1280
 HEIGHT = 720
 
 def loadlang():
+    """
+
+    Initialise les fichiers json de langues trouvés dans le répertoire
+
+    Arguments:
+        Aucun
+
+    Retourne:
+        languages (dictionnaire): un dictionnaire contenant comme clé le
+        nom de la langue et en valeur un dictionnaire de tous les mots
+        traduits
+
+    """
+
     languages = {}
 
     for file_name in os.listdir("lang"):
@@ -22,6 +36,19 @@ def loadlang():
 #Fonction de boucle principale et gestion des fenêtres
 
 def main(lang):
+    """
+
+    Gère la navigation entre les différents menus
+
+    Arguments:
+        lang (dictionnaire): la langue choisie par défaut ou modifiée dans
+        les options
+
+    Retourne:
+        - : navigue entre les différents menus
+        
+    """
+
     pygame.init()
 
     font_path = "../assets/fonts/RobotoMono-VariableFont_wght.ttf"
@@ -42,14 +69,10 @@ def main(lang):
             screen, lang, mode_level = options(lang, mode_level, SCREEN, FONT)
         
         elif screen == "play":
-            screen, lang, results, secret_word, quit_program = play(lang, mode_level, SCREEN, FONT)
-            if quit_program:
-                running = False
+            screen, lang, results, secret_word = play(lang, mode_level, SCREEN, FONT)
         
         elif screen == "win_message":
             screen = win_screen(results, lang, secret_word, SCREEN, FONT)
-            if quit_program:
-                running = False
         
         elif screen == "lose_message":
             screen = lose_screen(results, lang, secret_word, SCREEN, FONT)
@@ -62,6 +85,25 @@ def main(lang):
 #Fonctions de fenêtres
 
 def win_screen(results, lang, secret_word, screen, font):
+    """
+
+    Ecran qui affiche un résumé si l'on gagne
+
+
+    Arguments:
+        results (liste de strings): contient tous les essais effectués
+        lang (dictionnaire): la langue actuelle du jeu
+        secret_word (string): le mot secret
+        screen (écran de jeu Pygame): Ecran de jeu initialisé avec Pygame dans la fonction main
+        font (police de jeu Pygame): Police de jeu utilisée pour le texte
+
+    Retourne:
+        Si le joueur décide de retourner au menu:
+
+        "menu" (string): retour au menu
+
+    """
+
     pygame.display.set_caption(lang["wordle"] + ' - ' + lang["win"])
     text = font.render(lang["win_message"], True, gui.GREEN)
     text_rect = text.get_rect(center=(screen.get_width() // 2, 150))
@@ -86,7 +128,8 @@ def win_screen(results, lang, secret_word, screen, font):
                 return "menu"
             
             elif quit_btn.on_click(event):
-                running = False
+                pygame.quit()
+                sys.exit()
         
         screen.fill(gui.WHITE)
         menu_btn.draw(screen, font)
@@ -97,6 +140,13 @@ def win_screen(results, lang, secret_word, screen, font):
         pygame.display.flip()
 
 def lose_screen(results, lang, secret_word, screen, font):
+    """
+
+    Même fonctionnement que win_screen, mais affichera
+    un message si l'on perd.
+
+    """
+
     pygame.display.set_caption(lang["wordle"] + ' - ' + lang["lose"])
     text = font.render(lang["lose_message"], True, gui.RED)
     text_rect = text.get_rect(center=(screen.get_width() // 2, 150))
@@ -133,6 +183,30 @@ def lose_screen(results, lang, secret_word, screen, font):
         pygame.display.flip()
 
 def play(lang, mode_level, screen, font):
+    """
+
+    Boucle principale du jeu
+
+    Arguments:
+        lang(dictionnaire): la langue actuelle du jeu
+        mode_level(string): le mode de jeu
+        screen (écran de jeu Pygame): Ecran de jeu initialisé avec Pygame dans la fonction main
+        font (police de jeu Pygame): Police de jeu utilisée pour le texte
+
+    Retourne:
+        Si le joueur gagne:
+
+        "win_message" (string): l'écran du message du gagnant
+        lang (dictionnaire): la langue actuelle du jeu
+        game.mot_essayer (liste de string): historique des essais
+        game.secret (string): le mot secret
+
+        Si le joueur perd, pareillement sauf:
+
+        "win_message" -> "lose_message" (string): l'écran du message du perdant
+
+    """
+
     pygame.display.set_caption(lang["wordle"] + " - " + lang["play"])
     running = True
     quit_program = False
@@ -216,11 +290,11 @@ def play(lang, mode_level, screen, font):
                                 correct = ["ok" for i in range(word_length)]
                                 if resultat == correct:
                                     gui.win_anim(screen, font, indicator_grid, grid, current_row)
-                                    return "win_message", lang, game.mot_essayer, game.secret, quit_program
+                                    return "win_message", lang, game.mot_essayer, game.secret
                                 else:
                                     if i == 5:
                                         gui.lose_anim(screen, font, resultat, indicator_grid, grid, current_row)
-                                        return "lose_message", lang, game.mot_essayer, game.secret, quit_program
+                                        return "lose_message", lang, game.mot_essayer, game.secret
                                     else:
                                         gui.change_letter_colors(indicator_grid, current_row, resultat)
                                         i += 1
@@ -231,9 +305,37 @@ def play(lang, mode_level, screen, font):
                                     game.mot_essayer.append(guess)
 
         pygame.display.flip()
-    return "menu", quit_program
 
 def options(lang, mode_level, screen, font):
+    """
+
+    Ecran pour les paramètres
+
+    Arguments:
+        lang (dictionnaire): la langue actuelle du jeu
+        mode_level: le mode actuel du jeu
+        screen (écran de jeu Pygame): Ecran de jeu initialisé avec Pygame dans la fonction main
+        font (police de jeu Pygame): Police de jeu utilisée pour le texte
+
+    Retourne:
+        Si le bouton "language_btn" est cliqué:
+
+        "options" (string): on reste sur l'écran d'options
+        lang (dictionnaire): la nouvelle langue choisie
+        mode_level (string): le mode actuel du jeu
+
+        Si le bouton "mode_btn" est cliqué, pareillement sauf:
+
+        mode_level -> nouveau mode_level(string)
+
+        Si le bouton "back_btn" est cliqué:
+
+        "menu" (string): on retourne au menu
+        lang (dictionnaire): l'éventuelle nouvelle langue choisie
+        mode_level (string): l'éventuel nouveau mode choisi
+
+    """
+
     pygame.display.set_caption(lang["wordle"] + " - " + lang["options"])
     running = True
     languages_keys = list(languages.keys())
@@ -278,6 +380,27 @@ def options(lang, mode_level, screen, font):
         
 
 def main_menu(lang, screen, title_font, font):
+    """
+
+    Ecran du menu principal
+
+    Arguments:
+        lang (dictionnaire): langue actuelle du jeu
+        screen (écran de jeu Pygame): Ecran de jeu initialisé avec Pygame dans la fonction main
+        title_font (police de jeu Pygame): police plus grande pour le titre
+        font (police de jeu Pygame): Police de jeu utilisée pour le texte
+
+
+    Retourne:
+        Si le joueur clique sur "play_btn":
+
+        "play" (string): l'écran de jeu
+
+        Si le joueur clique sur "options_btn":
+
+        "options" (string): l'écran de paramètres
+
+    """
     
     pygame.display.set_caption(lang["wordle"] + ' - ' + lang["main_menu"])
     running = True
@@ -315,12 +438,37 @@ def main_menu(lang, screen, title_font, font):
 #Fonctions utilitaires
 
 def get_word(row):
+    """
+
+    Obtient le mot écrit dans la ligne actuelle
+
+    Arguments:
+        row (liste d'élements de type Lettre): toutes les lettres entrées
+
+    Retourne:
+        word (string): le mot écrit avec toutes les lettres rassemblées
+
+    """
+
     word = ""
     for letter in row:
         word += letter.text
     return word
 
 def reset_row(row):
+    """
+
+    Réinitialise la ligne actuelle
+
+    Arguments:
+        row (liste d'éléments de type Letter): toutes les lettres entrées
+
+    Retourne:
+        row[0] (élément Letter): la première lettre da la ligne une fois
+        réinitialisée
+
+    """
+
     for letter in row:
         letter.text = ''
         letter.exec = "writable"

@@ -1,6 +1,6 @@
 import pygame
 
-#Constantes
+#Constantes de couleur
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -56,6 +56,20 @@ class Letter:
 #Fonctions GUI
 
 def init_grid(screen,word_length):
+    """
+
+    Initialise la grille visuelle du jeu
+
+    Arguments:
+        screen (écran de jeu Pygame): Ecran de jeu initialisé avec Pygame dans le main
+        word_length (entier): La longueur du mot secret
+
+    Retourne:
+        Liste de 6 listes avec éléments de type Lettre: La grille avec les 6 lignes de longueur word_length, 
+        correspondant aux 6 essais
+
+    """
+
     grid = []
     rows = 6
 
@@ -93,6 +107,18 @@ def init_grid(screen,word_length):
     return grid
 
 def init_keyboard(screen):
+    """
+
+    Initialise l'indicateur de lettres
+
+    Arguments:
+        screen (écran de jeu Pygame): Ecran de jeu initialisé avec Pygame dans le main
+
+    Retourne:
+        indicator_grid (liste de 3 listes avec éléments de type Lettre): les 3 listes correspondent 
+        aux 3 lignes visant à reproduire un clavier AZERTY
+
+    """
     
     keyboard = ["AZERTYUIOP","QSDFGHJKLM","WXCVBN"]
     indicator_grid = []
@@ -115,10 +141,28 @@ def init_keyboard(screen):
     
     return indicator_grid
 
-def change_letter_colors(indicator, row, result):
+def change_letter_colors(indicator, row, results):
+    """
+
+    Change la couleur d'une lettre en fonction du résultat obtenu
+
+    Arguments:
+        indicator (liste de 3 listes avec éléments de type Letter): L'indicateur
+        de lettres
+
+        row (liste d'élements Lettre): la ligne jouée actuellement
+
+        results(liste de strings): indique pour chaque lettre son résultat par rapport au
+        mot secret
+
+    Retourne:
+        - : modifie la ligne de jeu directement
+
+    """
+
     i = 0
     for letter in row:
-        status = result[i]
+        status = results[i]
         if status == "mal placé":
             letter.bg_color = YELLOW
         elif status == "ok":
@@ -133,6 +177,28 @@ def change_letter_colors(indicator, row, result):
         i += 1
 
 def win_anim(screen, font, indicator, grid, row):
+    """
+
+    Joue une animation lorsqu'on trouve le mot secret
+
+    Arguments:
+
+        screen (écran de jeu Pygame): Ecran de jeu initialisé avec Pygame dans le main
+
+        font (police de jeu Pygame): Police du jeu utilisée pour le texte
+
+        indicator (liste de 3 listes avec éléments de type Letter): L'indicateur
+        de lettres
+
+        grid (liste de rows): La grille entière
+
+        row (liste d'élements Lettre): la ligne jouée actuellement
+
+    Retourne:
+        - : modifie la ligne de jeu directement en jouant l'animation.
+
+    """
+
     for letter in row:
         letter.bg_color = GREEN
         for i in range(3):
@@ -152,6 +218,31 @@ def win_anim(screen, font, indicator, grid, row):
         pygame.time.delay(350)
 
 def lose_anim(screen, font, results, indicator, grid, row):
+    """
+    
+    Joue une animation lorsque l'on a atteint le nombre maximal d'essais
+
+    Arguments:
+
+        screen (écran de jeu Pygame): Ecran de jeu initialisé avec Pygame dans le main
+
+        font (police de jeu Pygame): Police du jeu utilisée pour le texte
+
+        results (liste de strings): indique pour chaque lettre son résultat par rapport au
+        mot secret
+
+        indicator (liste de 3 listes avec éléments de type Letter): L'indicateur
+        de lettres
+
+        grid (liste de rows): La grille entière
+
+        row (liste d'élements Lettre): la ligne jouée actuellement
+
+    Retourne:
+        - : modifie la ligne de jeu directement en jouant l'animation.
+
+    """
+
     i = 0
     for letter in row:
         status = results[i]

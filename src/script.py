@@ -1,14 +1,43 @@
-def verification(mot_secret, mot_essayer): 
+def occurence(mot):
+    """
+
+    Calcule le nombre d'occurences de chaque
+    lettre dans un mot
+
+    Arguments:
+        mot (string): le mot
+
+    Retourne:
+        res (dictionnaire): un dictionnaire avec
+        le nombre de chaque occurence de chaque
+        lettre
+
+    """
+
+    res = {}
+    for i in mot:
+        if i in res:
+            res[i] += 1
+        else:
+            res[i] = 1
+    return res
+
+def verification(mot_secret, mot_essayer):
+    """
+
+    Vérifie les correspondances entre l'essai et le mot secret
+
+    Arguments:
+        mot_secret (string): mot secret
+        mot_essayer (string): mot actuellement essayé
+
+    Retourne:
+        resultat(liste de strings): liste avec les états "ok",
+        "mal placé" et "non" pour chaque indice de lettre.
+
+    """
     
     resultat = []
-    def occurence(mot):
-        res = {}
-        for i in mot:
-            if i in res:
-                res[i] += 1
-            else:
-                res[i] = 1
-        return res
 
     occurences = occurence(mot_secret)
 
