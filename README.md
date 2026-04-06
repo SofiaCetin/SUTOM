@@ -196,5 +196,5 @@ Le lancement de fichiers démos est détaillé dans la section **Exécution**.
 
 ## Participations
 
-- **[Sofia CETIN](https://code.up8.edu/scetin)**: Développement de l'interface graphique, création des fichiers et du script de test, rédaction du README
+- **[Sofia CETIN](https://code.up8.edu/scetin)**: Développement de l'interface graphique, développement du script de test, développement du script d'ajout au lexique, rédaction du README et des docstrings
 - **[Eliase TABBAHK](https://code.up8.edu/etabbakh)**: Développement du fichier de script du jeu
