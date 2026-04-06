@@ -39,11 +39,22 @@ Pour plus d'informations sur ce package, vous pouvez consulter le lien officiel 
 
 **[Documentation Pygame](https://www.pygame.org/wiki/GettingStarted)**
 
-Vous pouvez également configurer un environnement virtuel pour ne pas avoir à installer le package sur toute votre machine. 
+_**Attention:** Pygame ne peut pas être installé sous les versions Python 3.14+ faute de mises à jour. C'est pour cela que je vous conseille de déployer un environnement virtuel sous une autre version de Python, comme la version 3.13.9._
+
+Ce programme Python nécessite également l'import Unidecode, afin de pouvoir normaliser les mots à accents.
+
+```bash
+$pip install unidecode
+```
+
+De même, vous pouvez trouver ci-dessous le lien vers la documentation.
+
+**[Documentation Unidecode](https://pypi.org/project/Unidecode/)**
+
+Vous pouvez configurer, si vous le souhaitez, un environnement virtuel pour ne pas avoir à installer ces packages de manière généralisée sur votre machine. 
 
 **[Créer un environnement Python virtuel](https://docs.python.org/3/library/venv.html)**
 
-_**Attention:** Pygame ne peut pas être installé sous les versions Python 3.14+ faute de mises à jour. C'est pour cela que je vous conseille de déployer un environnement virtuel sous une autre version de Python, comme la version 3.13.9._
 
 ### Téléchargement
 
@@ -93,7 +104,9 @@ Il est possible d'implémenter de nouvelles langues au programme, sous format JS
 
 Le format supporté par le programme pour l'import de fichiers langues est le format [JSON](https://fr.wikipedia.org/wiki/JavaScript_Object_Notation).
 
-Il doit respecter la notation suivante: les clés doivent être inchangées pour assurer le bon fonctionnement du programme. Elles sont en anglais par défaut et désignent un champ de texte spécifique. Voici l'exemple du fichier **fr\.json** que vous pouvez retrouver dans le dépôt:
+Il doit respecter la notation suivante: les clés doivent être inchangées pour assurer le bon fonctionnement du programme. Elles sont en anglais par défaut et désignent un champ de texte spécifique.
+Le nom du fichier, par convention, doit être nommé sous le code [ISO 639-1](https://fr.wikipedia.org/wiki/ISO_639) de la langue en minuscules.
+Voici l'exemple du fichier **fr\.json** que vous pouvez retrouver dans le dépôt:
 
 ```json
 {"language" : "Langage: FR",
@@ -145,11 +158,35 @@ C'est également ici que vous pourrez modifier les lexiques pour chacunes des la
 
 </details>
 
-### Implémentation d'un lexique
+### Implémentation de lexiques externes
 
-Les fichiers lang incluent un lexique par défaut, composé de 10 mots pour des mots allant de 6 à 10 lettres. Vous pouvez modifier ce lexique en éditant le fichier JSON et les parties **6_letter_words**, **7_letter_words** et ainsi de suite. 
+Les fichiers lang incluent un lexique par défaut, composé de 10 mots pour des mots allant de 6 à 10 lettres. Vous pouvez utiliser le script automatique **w_to_lexicon\.py** pour ajouter de nouveaux mots.
 
-Il est important de respecter la bonne longueur des mots pour assurer le bon fonctionnement des différentes difficultés proposées par le jeu.
+<details>
+
+<summary><u>Comment utiliser le script automatique ?</u></summary>
+
+Le script **w_to_lexicon\.py** se lance en se positionnant dans le répertoire src, et en utilisant le chevron vers la gauche comme pour lancer les fichiers démos
+
+```bash
+$python3 w_to_lexicon.py < mots.txt
+```
+
+Le fichier texte que vous souhaitez utiliser comme input doit impérativement respecter la syntaxe suivante. La langue des mots doit exister en tant que fichier JSON et être indiquée pareillement que le nom du fichier JSON, sous son code [ISO 639-1](https://fr.wikipedia.org/wiki/ISO_639), et sur la première ligne du fichier texte.
+
+```gedit
+fr
+Abeille
+Bonjour
+Nouveau
+Miel
+...
+```
+
+
+</details>
+<br>
+Il est possible de modifier le lexique d'une langue en éditant manuellement le fichier JSON et les clés correspondantes, mais ceci est déconseillé car cela peut favoriser les erreurs de longueur de mots et de langues.
 
 ### Tests automatisés
 
