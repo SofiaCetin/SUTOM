@@ -1,10 +1,15 @@
-import json
+import os, json
 
 language = input().strip().lower()
 file_to_w = f"{language}.json"
 file_path = f"lang/{file_to_w}"
-with open(file_path, 'r', encoding="utf-8") as json_f:
-    data = json.load(json_f)
+
+if os.path.exists(file_path):   
+    with open(file_path, 'r', encoding="utf-8") as json_f:
+        data = json.load(json_f)
+else:
+    print("Le fichier de langue spécifié n'existe pas.")
+    exit(1)
 
 try:
     while True:
