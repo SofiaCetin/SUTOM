@@ -58,7 +58,7 @@ Vous pouvez configurer, si vous le souhaitez, un environnement virtuel pour ne p
 
 ### Téléchargement
 
-Une fois le package pygame installé, vous pouvez télécharger le code source du programme afin de l'exécuter, comme suit:
+Une fois les prérequis installés, vous pouvez télécharger le code source du programme afin de l'exécuter, comme suit:
 
 <img src="assets/image_readme.png" width="300" alt="Une image du jeu SUTOM français">
 
