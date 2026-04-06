@@ -22,7 +22,7 @@ def loadlang():
 
     for file_name in os.listdir("lang"):
         file_path = os.path.join("lang",file_name)
-        with open(file_path) as json_f:
+        with open(file_path, encoding="utf-8") as json_f:
             key_name = ""
             for char in file_name:
                 if char == ".":
