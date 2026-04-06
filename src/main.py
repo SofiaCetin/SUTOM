@@ -24,13 +24,14 @@ def loadlang():
 def main(lang):
     pygame.init()
 
-    FONT = pygame.font.SysFont("arial", 50)
-    TITLE_FONT = pygame.font.SysFont("arial", 80)
+    font_path = "../assets/fonts/RobotoMono-VariableFont_wght.ttf"
+    FONT = pygame.font.Font(font_path, 34)
+    TITLE_FONT = pygame.font.Font(font_path, 80)
     SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
 
     mode_level = "default"
     screen = "menu"
-    running = True 
+    running = True
 
     while running:
 
@@ -278,7 +279,7 @@ def options(lang, mode_level, screen, font):
 
 def main_menu(lang, screen, title_font, font):
     
-    pygame.display.set_caption(lang["wordle"] + '-' + lang["main_menu"])
+    pygame.display.set_caption(lang["wordle"] + ' - ' + lang["main_menu"])
     running = True
 
     text = title_font.render(lang["wordle"], True, gui.BLACK)
