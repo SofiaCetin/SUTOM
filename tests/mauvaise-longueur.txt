@@ -1,4 +1,3 @@
-demo
 MIEL
 CHATON
 MIEL
