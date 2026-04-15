@@ -72,13 +72,13 @@ Vous pouvez également cloner le dépôt avec SSH ou HTTPS.
 $python3 main.py
 ```
 
-**Si vous souhaitez exécuter les démos:** Vous pouvez lancer dans le répertoire source la commande, avec le fichier test désiré
+**Si vous souhaitez exécuter les démos:** Vous pouvez lancer dans le répertoire source la commande, avec un répertoire ou fichier test désiré
 
 ```bash
-$python3 tests.py < ../tests/test.txt
+$python3 tests.py CHEMIN gui_on/gui_off
 ```
 
-_Notez que les démos avec l'interface graphique ne sont pas disponibles et complexes à implémenter. On n'utilisera donc que l'output du terminal._
+_Notez que les démos avec l'interface graphique ne peuvent pas être effectuées si le chemin spécifié est un dossier._
 
 ## Fonctionnalités
 
