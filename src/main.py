@@ -209,7 +209,6 @@ def play(lang, mode_level, screen, font):
 
     pygame.display.set_caption(lang["wordle"] + " - " + lang["play"])
     running = True
-    quit_program = False
     
     if mode_level == "default":
         word_length = random.randint(6,10)
@@ -240,7 +239,6 @@ def play(lang, mode_level, screen, font):
     current_letter.input_status = "activated"
 
     while running:
-
         
         screen.fill(gui.WHITE)
         for row in grid:

@@ -161,19 +161,29 @@ def change_letter_colors(indicator, row, results):
     """
 
     i = 0
+    letters_prior_1 = ""
+    letters_prior_2 = ""
     for letter in row:
         status = results[i]
-        if status == "mal placé":
+        if status == "non":
+            letter.bg_color = GREY
+        elif status == "mal placé":
             letter.bg_color = YELLOW
+            letters_prior_2 += letter.text
         elif status == "ok":
             letter.bg_color = GREEN
-        else:
-            letter.bg_color = GREY
-        
+            letters_prior_1 += letter.text
+                
         for j in range(3):
             for letter2 in indicator[j]:
                 if letter2.text == letter.text:
-                    letter2.bg_color = letter.bg_color
+                    if letter.text in letters_prior_1:
+                        letter2.bg_color = GREEN
+                    elif letter.text in letters_prior_2:
+                        letter2.bg_color = YELLOW
+                    else:
+                        letter2.bg_color = letter.bg_color
+        
         i += 1
 
 def win_anim(screen, font, indicator, grid, row):
