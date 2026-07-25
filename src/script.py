@@ -32,28 +32,28 @@ def verification(mot_secret, mot_essayer):
         mot_essayer (string): mot actuellement essayé
 
     Retourne:
-        resultat(liste de strings): liste avec les états "ok",
+        resultat (liste de strings): liste avec les états "ok",
         "mal placé" et "non" pour chaque indice de lettre.
 
     """
-    
-    resultat = []
 
     occurences = occurence(mot_secret)
+    resultat = ["non"] * len(mot_secret)
 
     for i in range(len(mot_essayer)):
         if mot_essayer[i] == mot_secret[i]:
-            resultat.append("ok")
+            resultat[i] = "ok"
             occurences[mot_essayer[i]] -= 1
-        elif mot_essayer[i] in mot_secret:
-            if occurences[mot_essayer[i]] == 0:
-                resultat.append("non")
-            else:
-                resultat.append("mal placé")
-                occurences[mot_essayer[i]] -= 1
-        else:
-            resultat.append("non")
-    
+
+    for i in range(len(mot_essayer)):
+        if resultat[i] == "ok":
+            continue
+
+        if (mot_essayer[i] in occurences
+                and occurences[mot_essayer[i]] > 0):
+            resultat[i] = "mal placé"
+            occurences[mot_essayer[i]] -= 1
+
     return resultat
 
 class Game:

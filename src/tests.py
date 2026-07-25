@@ -1,4 +1,4 @@
-import pygame, unidecode, script, gui, sys, os, time
+import pygame, unidecode, script, gui, sys, os
 
 WIDTH = 1280
 HEIGHT = 720
