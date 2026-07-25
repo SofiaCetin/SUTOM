@@ -83,3 +83,4 @@ jobs:
           files: |
             sutom-windows/SUTOM-windows.zip
             sutom-macos/SUTOM-macOS.zip
+            
