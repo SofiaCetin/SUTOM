@@ -1,3 +1,4 @@
+from pathlib import Path
 import pygame, unidecode, random, gui, script, os, json, sys
 
 WIDTH = 1280
@@ -19,9 +20,11 @@ def loadlang():
     """
 
     languages = {}
+    
+    lang_dir = Path(__file__).resolve().parent / "lang"
 
-    for file_name in os.listdir("lang"):
-        file_path = os.path.join("lang",file_name)
+    for file_name in os.listdir(lang_dir):
+        file_path = lang_dir / file_name
         with open(file_path, encoding="utf-8") as json_f:
             key_name = ""
             for char in file_name:
@@ -51,7 +54,7 @@ def main(lang):
 
     pygame.init()
 
-    font_path = "../assets/fonts/RobotoMono-VariableFont_wght.ttf"
+    font_path = Path(__file__).resolve().parent / "fonts" / "RobotoMono-VariableFont_wght.ttf"
     FONT = pygame.font.Font(font_path, 34)
     TITLE_FONT = pygame.font.Font(font_path, 80)
     SCREEN = pygame.display.set_mode((WIDTH, HEIGHT))
